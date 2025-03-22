@@ -7,7 +7,7 @@ package com.ss.topt.controller;
 import com.ss.config.DataSourceConfig;
 import com.ss.config.monitor.MonitorErrorsDto;
 import com.ss.config.monitor.ServiceSecurityRequest;
-import com.ss.topt.conf.js.ConfJsTopt;
+import com.ss.parser.img.conf.js.ConfJsTopt;
 
 import static com.ss.config.monitor.MonitorErrorsContr.STATUS_ERROR;
 import static com.ss.config.monitor.MonitorErrorsContr.STATUS_OK;

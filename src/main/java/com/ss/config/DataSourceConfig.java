@@ -1,6 +1,6 @@
 package com.ss.config;
 
-import com.ss.topt.conf.js.ConfJsTopt;
+import com.ss.parser.img.conf.js.ConfJsTopt;
 import com.zaxxer.hikari.HikariConfigMXBean;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.HikariPoolMXBean;

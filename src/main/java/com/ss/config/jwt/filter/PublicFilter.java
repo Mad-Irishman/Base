@@ -4,7 +4,7 @@ package com.ss.config.jwt.filter;
 import com.ss.config.jwt.TokenHolder;
 import com.ss.config.jwt.config.MutableHttpServletRequest;
 import com.ss.config.jwt.service.JwtValidationService;
-import com.ss.topt.conf.js.ConfJsTopt;
+import com.ss.parser.img.conf.js.ConfJsTopt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

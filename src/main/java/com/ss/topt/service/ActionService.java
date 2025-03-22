@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ss.Except4Support;
 import com.ss.Except4SupportDocumented;
-import com.ss.topt.conf.js.ConfJsTopt;
+import com.ss.parser.img.conf.js.ConfJsTopt;
 import com.ss.topt.controller.Contr;
 import com.ss.topt.controller.api.ApiRequestDto;
 import com.ss.topt.controller.api.ApiResponseDto;

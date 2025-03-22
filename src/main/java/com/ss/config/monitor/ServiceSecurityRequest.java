@@ -4,7 +4,7 @@
  */
 package com.ss.config.monitor;
 
-import com.ss.topt.conf.js.ConfJsTopt;
+import com.ss.parser.img.conf.js.ConfJsTopt;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

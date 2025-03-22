@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Submit URL</title>
+</head>
+<body>
+<h1>Submit URL</h1>
+
+<form action="/submit" method="post">
+    <label for="url">Enter URL:</label>
+    <input type="url" id="url" name="url" required placeholder="https://example.com">
+    <br><br>
+    <label for="folderName">Enter Folder Name:</label>
+    <input type="text" id="folderName" name="folderName" required placeholder="Folder Name">
+    <br><br>
+    <button type="submit">Submit</button>
+</form>
+
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+
+<div th:if="${message}" style="color: green;">
+    <p th:text="${message}"></p>
+</div>
+</body>
+</html>
