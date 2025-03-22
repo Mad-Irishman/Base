@@ -1,11 +1,12 @@
 package com.ss.parser.img.repository;
 
-import com.ss.Except4SupportDocumented;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+
 
 public class ImageDownloader implements Runnable {
     private final String imageUrl;
@@ -27,12 +28,7 @@ public class ImageDownloader implements Runnable {
                 out.write(buffer, 0, bytesRead);
             }
         } catch (IOException e) {
-            throw new Except4SupportDocumented(
-                    "IMAGE_DOWNLOAD_ERROR",
-                    "Error downloading image",
-                    "Error downloading image from URL: " + imageUrl,
-                    e
-            );
+            throw new RuntimeException("The image could not be downloaded: " + imageUrl, e);
         }
     }
 }

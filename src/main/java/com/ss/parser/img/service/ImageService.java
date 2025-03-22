@@ -1,8 +1,7 @@
 package com.ss.parser.img.service;
 
-import com.ss.parser.img.exception.ImageProcessingException;
+import com.ss.ExceptInfoUser;
 import com.ss.parser.img.repository.ImageDownloader;
-import com.ss.Except4SupportDocumented;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,13 +17,13 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class ImageService {
-    private final ExecutorService executorService;
+    private ExecutorService executorService;
 
     public ImageService() {
         this.executorService = Executors.newFixedThreadPool(10);
     }
 
-    public List<String> fetchImageUrls(String websiteUrl) throws ImageProcessingException {
+    public List<String> fetchImageUrls(String websiteUrl) throws ExceptInfoUser {
         try {
             List<String> imageUrls = new ArrayList<>();
             Document doc = Jsoup.connect(websiteUrl).get();
@@ -35,16 +35,15 @@ public class ImageService {
             }
             return imageUrls;
         } catch (IOException e) {
-            throw new Except4SupportDocumented(
-                    "IMAGE_FETCH_ERROR",
-                    "Ошибка при получении изображений с сайта",
-                    "Ошибка при парсинге изображений с сайта: " + websiteUrl,
+            throw new ExceptInfoUser(
+                    Collections.singletonMap("error", "Ошибка при получении изображений с сайта: " + websiteUrl),
                     e
             );
         }
     }
 
-    public void downloadImages(List<String> imageUrls, String downloadDir) throws Except4SupportDocumented {
+    public void downloadImages(List<String> imageUrls, String downloadDir) throws ExceptInfoUser {
+        restartExecutor();
         for (String imageUrl : imageUrls) {
             String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
             executorService.execute(new ImageDownloader(imageUrl, downloadDir + "/" + fileName));
@@ -54,34 +53,28 @@ public class ImageService {
 
         try {
             if (!executorService.awaitTermination(30, TimeUnit.SECONDS)) {
-                throw new Except4SupportDocumented(
-                        "IMAGE_DOWNLOAD_TIMEOUT",
-                        "Error downloading images",
-                        "Some images did not load within 30 seconds.",
-                        null
+                throw new ExceptInfoUser(
+                        Collections.singletonMap("error", "Некоторые изображения не были загружены в течение 30 секунд.")
                 );
             }
         } catch (InterruptedException e) {
-            throw new Except4SupportDocumented(
-                    "IMAGE_DOWNLOAD_INTERRUPTED",
-                    "Error waiting for images to finish loading",
-                    "Error waiting for images to finish loading.",
-                    e
+            throw new ExceptInfoUser(
+                    Collections.singletonMap("error", "Ошибка при ожидании загрузки изображений.")
             );
         }
-
     }
 
-    public void processWebsiteImages(String websiteUrl, String downloadDir) throws ImageProcessingException {
+    public void processWebsiteImages(String websiteUrl, String downloadDir) throws ExceptInfoUser {
         List<String> imageUrls = fetchImageUrls(websiteUrl);
         if (imageUrls.isEmpty()) {
-            throw new Except4SupportDocumented(
-                    "NO_IMAGES_FOUND",
-                    "No images found!",
-                    "On the website" + websiteUrl + " no images found.",
-                    null
-            );
+            throw new ExceptInfoUser(Collections.singletonMap("error", "Не удалось получить изображения с сайта."));
         }
         downloadImages(imageUrls, downloadDir);
+    }
+
+    private void restartExecutor() {
+        if (executorService.isShutdown() || executorService.isTerminated()) {
+            executorService = Executors.newFixedThreadPool(10);
+        }
     }
 }

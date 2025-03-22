@@ -1,5 +1,6 @@
 package com.ss.parser.img.controller;
 
+import com.ss.ExceptInfoUser;
 import com.ss.parser.img.service.FileStorageService;
 import com.ss.parser.img.service.ImageService;
 import com.ss.parser.img.validation.ValidationUrlFoleder;
@@ -51,16 +52,13 @@ public class ParseController {
             model.addAttribute("message", "Images downloaded successfully to the folder: " + folderName);
             return "formForUrl";
 
-        } catch (ImageProcessingException e) {
-            model.addAttribute("error", "An error occurred while processing the images: " + e.getMessage());
+        } catch (ExceptInfoUser e) {
+            model.addAttribute("error", e.getMessage());
             return "formForUrl";
         } catch (Except4SupportDocumented e) {
             System.err.println("Support error: " + e.getMessage4Support());
-            return "formForUrl";
-        } catch (Exception e) {
-            model.addAttribute("error", "An unexpected error occurred: " + e.getMessage());
+            model.addAttribute("error", "Support error: " + e.getMessage4Support());
             return "formForUrl";
         }
     }
-
 }

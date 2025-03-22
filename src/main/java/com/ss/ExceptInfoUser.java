@@ -36,6 +36,12 @@ public class ExceptInfoUser extends Exception {
         this.errors = errors;
     }
 
+    public ExceptInfoUser(Map<String, String> errors, Throwable cause) {
+        super(cause);  // Сохраняем оригинальное исключение
+        this.errors = errors;
+    }
+
+
     public Map<String, String> getErrors() {
         return errors;
     }
